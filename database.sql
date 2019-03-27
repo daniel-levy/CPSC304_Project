@@ -1,14 +1,14 @@
 -- Uncomment these lines to clear the tables after creating them
---DROP TABLE Individual_Artist1;
---DROP TABLE Liked_Song;
---DROP TABLE Favorite_List;
---DROP TABLE Users;
---DROP TABLE Song;
---DROP TABLE Album;
---DROP TABLE Record_Label1;
---DROP TABLE Music_Creator;
+DROP TABLE Individual_Artist1;
+DROP TABLE Liked_Song;
+DROP TABLE Favorite_List;
+DROP TABLE Users;
+DROP TABLE Song;
+DROP TABLE Album;
+DROP TABLE Record_Label1;
+DROP TABLE Music_Creator;
 
---COMMIT;
+COMMIT;
 
 CREATE TABLE Music_Creator(
 	mc_id INTEGER PRIMARY KEY,
@@ -33,7 +33,7 @@ CREATE TABLE Album(
 	album_id INTEGER PRIMARY KEY,
 	title CHAR(20) NOT NULL,
 	number_of_songs INTEGER,
-	release CHAR(4),
+	release INTEGER,
 	running_time FLOAT,
 	rating FLOAT,
 	primary CHAR(20) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE Song(
 	title CHAR(20) NOT NULL,
 	rating FLOAT,
 	length FLOAT,
-	release CHAR(4),
+	release INTEGER,
 	primary CHAR(20) NOT NULL,
 	secondary CHAR(20),
 	album_id INTEGER,

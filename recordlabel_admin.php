@@ -8,7 +8,7 @@
   Specifically, it will drop a table, create a table, insert values,
   update values, and perform select queries.
  
-  NOTE:  If you have a table called "Music_Creator", it will be destroyed
+  NOTE:  If you have a table called "Record_Label1", it will be destroyed
          by this sample program.
 
   The script assumes you already have a server set up.
@@ -22,22 +22,75 @@
   this script.
  -->
  
-<p>Enter a song and choose a recommendation filter to find new ones</p> 
 
-<p><font size="2">Song Title</font></p>
+<p>Insert values into Record Label below:</p>
 
-<form method="GET" action="song.php">
-<p><input type="text" name="title" size="20">
-<input type="submit" value="By Rating" name="ratingSearch">
-<input type="submit" value="By Length" name="lengthSearch">
-<input type="submit" value="By Release Date" name="releaseSearch">
-<input type="submit" value="By Genre" name="genreSearch">
-<input type="submit" value="By Album" name="albumSearch">
-<input type="submit" value="By Artist" name="mcSearch">
-<input type="submit" value="By Label" name="labelSearch"></p>
+<p><font size="2"> 
+Label ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Founder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Primary Genre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Secondary Genre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Country&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Years Active</font></p>
+
+<form method="POST" action="recordlabel_admin.php">
+<p>
+<input type="text" name="labelID" size="12">
+<input type="text" name="name" size="12">
+<input type="text" name="founder" size="12">
+<input type="text" name="primary" size="12">
+<input type="text" name="secondary" size="12">
+<input type="text" name="country" size="12">
+<input type="text" name="yearsActive" size="12">
+<!-- Define two variables to pass values. -->    
+<input type="submit" value="Insert" name="insertsubmit"></p>
 </form>
 
-<form method="GET" action="song.php">
+<p>Delete values from Record Label with the name below:</p>
+
+<p><font size="2"> 
+Name
+</font></p>
+
+<form method="POST" action="recordlabel_admin.php">
+<p>
+<input type="text" name="name" size="12">
+<input type="submit" value="Delete" name="deletesubmit">
+</p>
+</form>
+
+<p>Update the founder's name given the name of record Label</p>
+
+<p><font size="2"> 
+Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Founder's Name
+</font></p>
+
+<form method="POST" action="recordlabel_admin.php">
+<p>
+<input type="text" name="name" size="12">
+<input type="text" name="founder" size="12">
+<input type="submit" value="Update" name="updatesubmit">
+</p>
+</form>
+
+
+<!-- Create a form to pass the values.  
+     See below for how to get the values. --> 
+     
+<p>Enter a record label and choose a recommendation filter to find ones similar to it</p> 
+
+<p><font size="2">Record Label</font></p>      
+<form method="GET" action="recordlabel_admin.php">
+<p><input type="text" name="title" size="20">
+<input type="submit" value="By Genre" name="genreSearch">
+<input type="submit" value="By Country" name="countrySearch">
+<input type="submit" value="By Years Active" name="yearSearch">
+</p>
+</form>
+
+<form method="GET" action="recordlabel_admin.php">
 <input type="submit" value="See Database" name="queryAll">
 </form>
 
@@ -67,18 +120,14 @@
 </style>
 </html>
 
-
-<form method="POST" action="song.php">
+<form method="POST" action="recordlabel_admin.php">
 <input type="submit" value="Artists" name="goToArtist">
 <input type="submit" value="Albums" name="goToAlbum">
-<input type="submit" value="Labels" name="goToLabel">
+<input type="submit" value="Songs" name="goToSong">
 </form>
 
 
 <?php
-
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 
 /* This tells the system that it's no longer just parsing 
    HTML; it's now parsing PHP. */
@@ -164,12 +213,17 @@ function executeBoundSQL($cmdstr, $list) {
 }
 
 function printResult($result) { //prints results from a select statement
-	echo "<br>Got data from table Music_Creator:<br>";
+	echo "<br>Got data from table Record_Label1:<br>";
 	echo "<table>";
 	echo "<tr><th>ID</th><th>Name</th></tr>";
 
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NID"] . "</td><td>" . $row["NAME"] .  "</td><td>" . $row["NCOL"] . "</td></tr>"; //or just use "echo $row[0]" 
+		echo "<tr><td>" . $row["mc_id"] . "</td><td>" .$row["name"] . "</td><td>" .
+		$row["number_of_members"] . "</td><td>" .
+		$row["number_of_releases"] ."</td><td>" .
+		$row["years_active"] . "</td><td>" .
+		$row["country_of_origin"] . "</td><td>" .
+		$row["primary"] . "</td><td>" .$row["secondary"] . "</td></tr>"; //or just use "echo $row[0]" 
 	}
 	echo "</table>";
 }
@@ -228,7 +282,7 @@ printTable($result, $columnNames); // this will print the table
 
 function printTable($resultFromSQL, $namesOfColumnsArray)
 {
-    echo "<br>Here are some songs you should check out:<br>";
+    echo "<br>Here is the output, nicely formatted:<br>";
     echo "<table>";
     echo "<tr>";
     // iterate through the array and print the string contents
@@ -279,157 +333,164 @@ function printTableAll($resultFromSQL, $namesOfColumnsArray)
 }
 
 if (array_key_exists('goToArtist', $_POST)) {
-	header("location: musiccreator.php");
+	header("location: musiccreator_admin.php");
 } 
 else if (array_key_exists('goToAlbum', $_POST)) {
-	header("location: album.php");
+	header("location: album_admin.php");
 }
-else if (array_key_exists('goToLabel', $_POST)) {
-	header("location: recordlabel.php");
+else if (array_key_exists('goToSong', $_POST)) {
+	header("location: song_admin.php");
 }
 
 // Connect Oracle...
 if ($db_conn) {
-	// Query the whole song database to find all the potential searchable songs
+	// Query record label database
 	if (array_key_exists('queryAll', $_GET)) {
 		
-		$result = executePlainSQL("select * from song order by song_id"); 
+		$result = executePlainSQL("select * from Record_Label1"); 
 		
 		if ($_GET && $success) {
-			$columnNames = array("Song ID", "Title", "Rating",
-								 "Length", "Release",
-								 "Primary Genre", "Secondary Genre", "Album ID",
-								 "MC ID","Label ID");
+			$columnNames = array("LabelID", "Name", "Founder",
+                                "PrimaryGenre", "SecondaryGenre",
+                                "Country", "YearsActive");
 			printTableAll($result, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: recordlabel_admin.php");
 		}
-	} 
-	// Find the songs with similar ratings to the song entered into the search bar
-	else if (array_key_exists('ratingSearch', $_GET)) {
-		$title = $_GET['title'];
+    }  
+    
+    // Insert recordLabel
+	else if (array_key_exists('insertsubmit', $_POST)) {
+		$labelID = $_POST['labelID'];
+		$name = $_POST['name'];
+		$founder = $_POST['founder'];
+		$primary = $_POST['primary'];
+		$secondary = $_POST['secondary'];
+		$country = $_POST['country'];
+		$yearsActive = $_POST['yearsActive'];
 		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
-		$rating = null;
-		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$rating = $row[2]; 
-		}
 		
-		$final = executePlainSQL('select title, rating, primary from song where title<>\''.$title.'\' and ('.$rating.'-rating) < 0.5 and (rating-'.$rating.') < 0.5');
-		if ($_GET && $success) {
-			$columnNames = array("Title", "Rating","Primary Genre");
-			printTableAll($final, $columnNames);
+		$result = executePlainSQL('insert into Record_Label1 values('.$labelID.',\''.$name.'\',\''.$founder.'\',\''.$primary.'\',\''.$secondary.'\',\''.$country.'\','.$yearsActive.')'); 
+		OCICommit($db_conn);
+		if ($_POST && $success) {
+			echo"<br>Successfully Inserted</br>";
 		} else {
-			header("location: song.php");
+			echo"<br>Error Inserting</br>";
 		}
-	} 
-	// Find the songs with similar length to the song entered into the search bar
-	else if (array_key_exists('lengthSearch', $_GET)) {
-		$title = $_GET['title'];
+    }
+    
+    // delete recordlabel with given name
+	else if (array_key_exists('deletesubmit', $_POST)) {
+		$name = $_POST['name'];
 		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
-		$length = null;
-		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$length = $row[3]; 
-		}
-		
-		$final = executePlainSQL('select title, length, primary from song where title<>\''.$title.'\' and ('.$length.'-length) < 1.0 and (length-'.$length.') < 1.0');
-		if ($_GET && $success) {
-			$columnNames = array("Title", "Length","Primary Genre");
-			printTableAll($final, $columnNames);
+		$result = executePlainSQL('delete from Record_Label1 where name=\''.$name.'\''); 
+		OCICommit($db_conn);
+		if ($_POST && $success) {
+			echo"<br>Successfully Deleted</br>";
 		} else {
-			header("location: song.php");
+			echo"<br>Error Deleting</br>";
 		}
-	} 
-	// Find the songs with similar release date to the song entered into the search bar
-	else if (array_key_exists('releaseSearch', $_GET)) {
-		$title = $_GET['title'];
+    }
+    
+    // Update the founder name given the name of record label
+	else if (array_key_exists('updatesubmit', $_POST)) {
+		$name = $_POST['name'];
+		$founder = $_POST['founder'];
 		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
-		$release = null;
-		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$release = $row[4]; 
-		}
-		
-		$final = executePlainSQL('select title, release, primary from song where title<>\''.$title.'\' and ('.$release.'-release) < 5 and (release-'.$release.') < 5');
-		if ($_GET && $success) {
-			$columnNames = array("Title", "Length","Primary Genre");
-			printTableAll($final, $columnNames);
+		$result = executePlainSQL('update Record_Label1 set founder=\''.$founder.'\' where name=\''.$name.'\''); 
+		OCICommit($db_conn);
+		if ($_POST && $success) {
+			echo"<br>Successfully Updated</br>";
 		} else {
-			header("location: song.php");
+			echo"<br>Error Updating</br>";
 		}
 	}	
-	// Find the songs with similar genre to the song entered into the search bar
-	else if (array_key_exists('genreSearch', $_GET)) {
+    // Find music creator by primary genre
+    else if (array_key_exists('genreSearch', $_GET)) {
 		$title = $_GET['title'];
 		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
+		$result = executePlainSQL("select * from Record_Label1 where name='".$title."'"); 
 		$genre = null;
 		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$genre = $row[5]; 
+			$genre = $row[3]; 
 		}
 		
-		$final = executePlainSQL('select title, primary, secondary from song where title<>\''.$title.'\' and primary=\''.$genre.'\'');
+		$final = executePlainSQL('select * from Record_Label1 where name<>\''.$title.'\' and primary=\''.$genre.'\'');
 		if ($_GET && $success) {
-			$columnNames = array("Title","Primary Genre","Secondary Genre");
+			$columnNames = array("LabelID", "Name", "Founder",
+                                "PrimaryGenre", "SecondaryGenre",
+                                "Country", "YearsActive");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: recordlabel.php");
 		}
-	} 
-	// Find the songs on the same album as the song entered into the search bar
-	else if (array_key_exists('albumSearch', $_GET)) {
+	}
+    // Find music creator by country
+    else if (array_key_exists('countrySearch', $_GET)) {
 		$title = $_GET['title'];
 		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
-		$album = null;
+		$result = executePlainSQL("select * from Record_Label1 where name='".$title."'"); 
+		$country = null;
 		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$album = $row[7]; 
+			$country = $row[5]; 
 		}
 		
-		$final = executePlainSQL('select title, primary, secondary from song where title<>\''.$title.'\' and album_id='.$album);
+		$final = executePlainSQL('select * from Record_Label1 where name<>\''.$title.'\' and country=\''.$country.'\'');
 		if ($_GET && $success) {
-			$columnNames = array("Title","Primary Genre","Secondary Genre");
+			$columnNames = array("LabelID", "Name", "Founder",
+                                "PrimaryGenre", "SecondaryGenre",
+                                "Country", "YearsActive");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: recordlabel.php");
 		}
-	} 
-	// Find the songs by the same artist as the song entered into the search bar
-	else if (array_key_exists('mcSearch', $_GET)) {
+	}       
+    // Find music creator by years active
+    else if (array_key_exists('yearSearch', $_GET)) {
 		$title = $_GET['title'];
 		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
-		$artist = null;
+		$result = executePlainSQL("select * from Record_Label1 where name='".$title."'"); 
+		$year = null;
 		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$artist = $row[8]; 
+			$year = $row[6]; 
 		}
 		
-		$final = executePlainSQL('select title, primary, secondary from song where title<>\''.$title.'\' and mc_id='.$artist);
+		$final = executePlainSQL('select * from Record_Label1 where name<>\''.$title.'\' and years_active='.$year.'');
 		if ($_GET && $success) {
-			$columnNames = array("Title","Primary Genre","Secondary Genre");
+			$columnNames = array("LabelID", "Name", "Founder",
+                                "PrimaryGenre", "SecondaryGenre",
+                                "Country", "YearsActive");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: recordlabel.php");
 		}
-	} 
-	// Find the songs on the same label as the song entered into the search bar
-	else if (array_key_exists('labelSearch', $_GET)) {
-		$title = $_GET['title'];
-		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
-		$label = null;
-		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$label = $row[9]; 
-		}
-		
-		$final = executePlainSQL('select title, primary, secondary from song where title<>\''.$title.'\' and label_id='.$label);
-		if ($_GET && $success) {
-			$columnNames = array("Title","Primary Genre","Secondary Genre");
-			printTableAll($final, $columnNames);
+	}
+	// Insert values into music creator
+	else if (array_key_exists('insertsubmit', $_POST)) {
+	    // Insert values into table
+        $tuple = array (
+			":bind1" => $_POST['labelID'],
+			":bind2" => $_POST['name'],
+			":bind3" => $_POST['founder'],
+			":bind4" => $_POST['primary'],
+			":bind5" => $_POST['secondary'],
+			":bind6" => $_POST['country'],
+			":bind7" => $_POST['yearsActive']
+		);
+		$alltuples = array (
+			$tuple
+		);
+		executeBoundSQL("insert into Record_Label1 values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples);
+		$result = executePlainSQL("select * from Record_Label1");
+		if ($_POST && $success) {
+			$columnNames = array("LabelID", "Name", "Founder",
+                                "PrimaryGenre", "SecondaryGenre",
+                                "Country", "YearsActive");
+			printTableAll($result, $columnNames);
 		} else {
-			header("location: song.php");
-		}
+			header("location: recordlabel.php");
+		}		
+		
 	}
 
 	//Commit to save changes...
@@ -473,3 +534,4 @@ if ($db_conn) {
      OCI_RETURN_LOBS - return the value of a LOB of the descriptor.  
      Default mode is OCI_BOTH.  */
 ?>
+

@@ -291,7 +291,7 @@ if ($db_conn) {
 	// Query music creator database to find all the potential searchable songs
 	if (array_key_exists('queryAll', $_GET)) {
 		
-		$result = executePlainSQL("select * from music_creator"); 
+		$result = executePlainSQL("select * from music_creator order by mc_id"); 
 		
 		if ($_GET && $success) {
 			$columnNames = array("MusicCreatorID", "Name", "NumberofMembers",

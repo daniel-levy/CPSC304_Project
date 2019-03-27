@@ -21,23 +21,81 @@
   Next, we have some sample HTML code that will appear when you run
   this script.
  -->
- 
-<p>Enter a song and choose a recommendation filter to find new ones</p> 
 
-<p><font size="2">Song Title</font></p>
+<p>Insert values into Album below:</p>
+<p><font size="2"> 
+Album ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Number of songs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Running time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Rating&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Primary Genre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Secondary Genre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+MC ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Label ID</font></p>
 
-<form method="GET" action="song.php">
+<form method="POST" action="album_admin.php">
+<p>
+<input type="text" name="albumID" size="12">
+<input type="text" name="title" size="12">
+<input type="text" name="number_of_songs" size="12">
+<input type="text" name="release" size="12">
+<input type="text" name="running_time" size="12">
+<input type="text" name="rating" size="12">
+<input type="text" name="primary" size="12">
+<input type="text" name="secondary" size="12">
+<input type="text" name="mc_id" size="12">
+<input type="text" name="labelID" size="12">
+<input type="submit" value="Insert" name="insertsubmit">
+</p>
+</form>
+
+<p>Delete values from Album with the title below:</p>
+
+<p><font size="2"> 
+Title
+</font></p>
+
+<form method="POST" action="album_admin.php">
+<p>
+<input type="text" name="title" size="12">
+<input type="submit" value="Delete" name="deletesubmit">
+</p>
+</form>
+
+<p>Update the secondary genre of an album using the title entered :</p>
+
+<p><font size="2"> 
+Title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Secondary Genre
+</font></p>
+
+<form method="POST" action="album_admin.php">
+<p>
+<input type="text" name="title" size="12">
+<input type="text" name="secondary" size="12">
+<input type="submit" value="Update" name="updatesubmit">
+</p>
+</form>
+
+
+<p>Enter an album and choose a recommendation filter to find new ones</p>
+
+<p><font size="2">Album Title</font></p>
+
+<form method="GET" action="album_admin.php">
 <p><input type="text" name="title" size="20">
-<input type="submit" value="By Rating" name="ratingSearch">
-<input type="submit" value="By Length" name="lengthSearch">
+<input type="submit" value="By Number Of Songs" name="numberSearch">
 <input type="submit" value="By Release Date" name="releaseSearch">
+<input type="submit" value="By Running Time" name="durationSearch">
+<input type="submit" value="By Rating" name="ratingSearch">
 <input type="submit" value="By Genre" name="genreSearch">
-<input type="submit" value="By Album" name="albumSearch">
 <input type="submit" value="By Artist" name="mcSearch">
 <input type="submit" value="By Label" name="labelSearch"></p>
 </form>
 
-<form method="GET" action="song.php">
+<form method="GET" action="album_admin.php">
 <input type="submit" value="See Database" name="queryAll">
 </form>
 
@@ -67,10 +125,9 @@
 </style>
 </html>
 
-
-<form method="POST" action="song.php">
+<form method="POST" action="album_admin.php">
 <input type="submit" value="Artists" name="goToArtist">
-<input type="submit" value="Albums" name="goToAlbum">
+<input type="submit" value="Songs" name="goToSong">
 <input type="submit" value="Labels" name="goToLabel">
 </form>
 
@@ -228,7 +285,7 @@ printTable($result, $columnNames); // this will print the table
 
 function printTable($resultFromSQL, $namesOfColumnsArray)
 {
-    echo "<br>Here are some songs you should check out:<br>";
+    echo "<br>Here are some albums you should check out:<br>";
     echo "<table>";
     echo "<tr>";
     // iterate through the array and print the string contents
@@ -254,7 +311,7 @@ function printTable($resultFromSQL, $namesOfColumnsArray)
 
 function printTableAll($resultFromSQL, $namesOfColumnsArray)
 {
-    echo "<br>Here are all the songs you can search with:<br>";
+    echo "<br>Here are all the albums you can search with:<br>";
     echo "<table>";
     echo "<tr>";
     // iterate through the array and print the string contents
@@ -279,159 +336,207 @@ function printTableAll($resultFromSQL, $namesOfColumnsArray)
 }
 
 if (array_key_exists('goToArtist', $_POST)) {
-	header("location: musiccreator.php");
+	header("location: musiccreator_admin.php");
 } 
-else if (array_key_exists('goToAlbum', $_POST)) {
-	header("location: album.php");
+else if (array_key_exists('goToSong', $_POST)) {
+	header("location: song_admin.php");
 }
 else if (array_key_exists('goToLabel', $_POST)) {
-	header("location: recordlabel.php");
+	header("location: recordlabel_admin.php");
 }
 
 // Connect Oracle...
 if ($db_conn) {
-	// Query the whole song database to find all the potential searchable songs
+	// Query the whole album database to find all the potential searchable albums
 	if (array_key_exists('queryAll', $_GET)) {
 		
-		$result = executePlainSQL("select * from song order by song_id"); 
+		$result = executePlainSQL("select * from album"); 
 		
 		if ($_GET && $success) {
-			$columnNames = array("Song ID", "Title", "Rating",
-								 "Length", "Release",
-								 "Primary Genre", "Secondary Genre", "Album ID",
+			$columnNames = array("Album ID", "Title", "Number of Songs",
+								 "Release", "Running Time", "Rating",
+								 "Primary Genre", "Secondary Genre",
 								 "MC ID","Label ID");
 			printTableAll($result, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: album.php");
 		}
 	} 
-	// Find the songs with similar ratings to the song entered into the search bar
-	else if (array_key_exists('ratingSearch', $_GET)) {
+    // insert Album 
+	else if (array_key_exists('insertsubmit', $_POST)) {
+		$albumid = $_POST['albumID'];
+		$title = $_POST['title'];
+		$number = $_POST['number_of_songs'];
+		$running_time = $_POST['running_time'];
+		$release = $_POST['release'];
+		$primary = $_POST['primary'];
+		$secondary = $_POST['secondary'];
+		$rating = $_POST['rating'];
+		$mc_id = $_POST['mc_id'];
+		$labelid = $_POST['labelID'];
+		
+		$result = executePlainSQL('insert into album values('.$albumid.',\''.$title.'\','.$number.','.$release.','.$running_time.','.$rating.',\''.$primary.'\',\''.$secondary.'\','.$mc_id.','.$labelid.')'); 
+		OCICommit($db_conn);
+		if ($_POST && $success) {
+			echo"<br>Successfully Inserted</br>";
+		} else {
+			echo"<br>Error Inserting</br>";
+		}
+	}
+
+	// delete an album with given title
+	else if (array_key_exists('deletesubmit', $_POST)) {
+		$title = $_POST['title'];
+		
+		$result = executePlainSQL('delete from album where title=\''.$title.'\''); 
+		OCICommit($db_conn);
+		if ($_POST && $success) {
+			echo"<br>Successfully Deleted</br>";
+		} else {
+			echo"<br>Error Deleting</br>";
+		}
+	}
+
+	// update secondary genre of album using title
+	else if (array_key_exists('updatesubmit', $_POST)) {
+		$title = $_POST['title'];
+		$secondary = $_POST['secondary'];
+		
+		$result = executePlainSQL('update album set secondary=\''.$secondary.'\' where title=\''.$title.'\''); 
+		OCICommit($db_conn);
+		if ($_POST && $success) {
+			echo"<br>Successfully Updated Secondary genre</br>";
+		} else {
+			echo"<br>Error Updating</br>";
+		}
+	}	
+	// Find the albums with similar number of songs to the album entered into the search bar
+	else if (array_key_exists('numberSearch', $_GET)) {
 		$title = $_GET['title'];
 		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
-		$rating = null;
+		$result = executePlainSQL("select * from album where title='".$title."'"); 
+		$songNum = null;
 		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$rating = $row[2]; 
+			$songNum = $row[2]; 
 		}
 		
-		$final = executePlainSQL('select title, rating, primary from song where title<>\''.$title.'\' and ('.$rating.'-rating) < 0.5 and (rating-'.$rating.') < 0.5');
+		$final = executePlainSQL('select title, number_of_songs, primary from album where title<>\''.$title.'\' and number_of_songs='.$songNum);
 		if ($_GET && $success) {
-			$columnNames = array("Title", "Rating","Primary Genre");
+			$columnNames = array("Title", "Number of Songs","Primary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: album.php");
 		}
 	} 
-	// Find the songs with similar length to the song entered into the search bar
-	else if (array_key_exists('lengthSearch', $_GET)) {
-		$title = $_GET['title'];
-		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
-		$length = null;
-		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$length = $row[3]; 
-		}
-		
-		$final = executePlainSQL('select title, length, primary from song where title<>\''.$title.'\' and ('.$length.'-length) < 1.0 and (length-'.$length.') < 1.0');
-		if ($_GET && $success) {
-			$columnNames = array("Title", "Length","Primary Genre");
-			printTableAll($final, $columnNames);
-		} else {
-			header("location: song.php");
-		}
-	} 
-	// Find the songs with similar release date to the song entered into the search bar
+	// Find the albums with similar release date to the album entered into the search bar
 	else if (array_key_exists('releaseSearch', $_GET)) {
 		$title = $_GET['title'];
 		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
+		$result = executePlainSQL("select * from album where title='".$title."'"); 
 		$release = null;
 		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$release = $row[4]; 
+			$release = $row[3]; 
 		}
 		
-		$final = executePlainSQL('select title, release, primary from song where title<>\''.$title.'\' and ('.$release.'-release) < 5 and (release-'.$release.') < 5');
+		$final = executePlainSQL('select title, release, primary from album where title<>\''.$title.'\' and ('.$release.'-release) < 5 and (release-'.$release.') < 5');
 		if ($_GET && $success) {
-			$columnNames = array("Title", "Length","Primary Genre");
+			$columnNames = array("Title", "Release Date","Primary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: album.php");
 		}
-	}	
-	// Find the songs with similar genre to the song entered into the search bar
+	}
+	// Find the albums with similar length to the album entered into the search bar
+	else if (array_key_exists('durationSearch', $_GET)) {
+		$title = $_GET['title'];
+		
+		$result = executePlainSQL("select * from album where title='".$title."'"); 
+		$length = null;
+		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+			$length = $row[4]; 
+		}
+		
+		$final = executePlainSQL('select title, running_time, primary from album where title<>\''.$title.'\' and ('.$length.'-running_time) < 5 and (running_time-'.$length.') < 5');
+		if ($_GET && $success) {
+			$columnNames = array("Title", "Release Date","Primary Genre");
+			printTableAll($final, $columnNames);
+		} else {
+			header("location: album.php");
+		}
+	}
+	// Find the songs with similar rating to the album entered into the search bar
+	else if (array_key_exists('ratingSearch', $_GET)) {
+		$title = $_GET['title'];
+		
+		$result = executePlainSQL("select * from album where title='".$title."'"); 
+		$rating = null;
+		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+			$rating = $row[5]; 
+		}
+		
+		$final = executePlainSQL('select title, rating, primary from album where title<>\''.$title.'\' and ('.$rating.'-rating) < 0.5 and (rating-'.$rating.') < 0.5');
+		if ($_GET && $success) {
+			$columnNames = array("Title","Rating","Primary Genre");
+			printTableAll($final, $columnNames);
+		} else {
+			header("location: album.php");
+		}
+	} 	
+	// Find the albums with similar genre to the albums entered into the search bar
 	else if (array_key_exists('genreSearch', $_GET)) {
 		$title = $_GET['title'];
 		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
+		$result = executePlainSQL("select * from album where title='".$title."'"); 
 		$genre = null;
 		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$genre = $row[5]; 
+			$genre = $row[6]; 
 		}
 		
-		$final = executePlainSQL('select title, primary, secondary from song where title<>\''.$title.'\' and primary=\''.$genre.'\'');
+		$final = executePlainSQL('select title, primary, secondary from album where title<>\''.$title.'\' and primary=\''.$genre.'\'');
 		if ($_GET && $success) {
 			$columnNames = array("Title","Primary Genre","Secondary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: album.php");
 		}
 	} 
-	// Find the songs on the same album as the song entered into the search bar
-	else if (array_key_exists('albumSearch', $_GET)) {
-		$title = $_GET['title'];
-		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
-		$album = null;
-		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			$album = $row[7]; 
-		}
-		
-		$final = executePlainSQL('select title, primary, secondary from song where title<>\''.$title.'\' and album_id='.$album);
-		if ($_GET && $success) {
-			$columnNames = array("Title","Primary Genre","Secondary Genre");
-			printTableAll($final, $columnNames);
-		} else {
-			header("location: song.php");
-		}
-	} 
-	// Find the songs by the same artist as the song entered into the search bar
+	// Find the albums by the same artist as the album entered into the search bar
 	else if (array_key_exists('mcSearch', $_GET)) {
 		$title = $_GET['title'];
 		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
+		$result = executePlainSQL("select * from album where title='".$title."'"); 
 		$artist = null;
 		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
 			$artist = $row[8]; 
 		}
 		
-		$final = executePlainSQL('select title, primary, secondary from song where title<>\''.$title.'\' and mc_id='.$artist);
+		$final = executePlainSQL('select title, primary, secondary from album where title<>\''.$title.'\' and mc_id='.$artist);
 		if ($_GET && $success) {
 			$columnNames = array("Title","Primary Genre","Secondary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: album.php");
 		}
 	} 
-	// Find the songs on the same label as the song entered into the search bar
+	// Find the albums on the same label as the album entered into the search bar
 	else if (array_key_exists('labelSearch', $_GET)) {
 		$title = $_GET['title'];
 		
-		$result = executePlainSQL("select * from song where title='".$title."'"); 
+		$result = executePlainSQL("select * from album where title='".$title."'"); 
 		$label = null;
 		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
 			$label = $row[9]; 
 		}
 		
-		$final = executePlainSQL('select title, primary, secondary from song where title<>\''.$title.'\' and label_id='.$label);
+		$final = executePlainSQL('select title, primary, secondary from album where title<>\''.$title.'\' and label_id='.$label);
 		if ($_GET && $success) {
 			$columnNames = array("Title","Primary Genre","Secondary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: album.php");
 		}
 	}
-
+	
 	//Commit to save changes...
 	OCILogoff($db_conn);
 } else {
