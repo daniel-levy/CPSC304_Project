@@ -305,9 +305,9 @@ if ($db_conn) {
 	// Find music creator by primary genre
     else if (array_key_exists('releaseSearch', $_GET)) {
 		$label = $_GET['label'];
-		$result = executePlainSQL('select mc.name from music_creator mc where not exists(
-									select * from song s where not exists(
-									select r.label_id from record_label1 r where r.name =\''.$label.'\' and s.label_id = r.label_id and mc.mc_id = s.mc_id))'); 
+		$result = executePlainSQL("select mc.name from music_creator mc where not exists(
+									select * from record_label1 r where r.name = '$label' and not exists(
+									select s.mc_id from song s where s.label_id = r.label_id and mc.mc_id = s.mc_id))"); 
 
 		if ($_GET && $success) {
 			$columnNames = array("Artist Name");
