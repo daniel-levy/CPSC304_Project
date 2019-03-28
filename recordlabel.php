@@ -45,6 +45,7 @@
 <input type="submit" value="Artists" name="goToArtist">
 <input type="submit" value="Albums" name="goToAlbum">
 <input type="submit" value="Favorite List" name="goToFL">
+<input type="submit" value="Special Queries" name="goToSQ">
 </form>
 
 <?php
@@ -74,7 +75,7 @@ function executePlainSQL($cmdstr) {
 		echo "<br>Cannot execute this command: " . $cmdstr . "<br>";
 		$e = oci_error($statement); 
            // For OCIExecute errors, pass the statement handle.
-		echo htmlentities($e['message']);
+		echo htmlentities($e['message']); 
 		$success = False;
 	} else {
 	}
@@ -157,6 +158,9 @@ else if (array_key_exists('goToSong', $_POST)) {
 }
 else if (array_key_exists('goToFL', $_POST)) {
 	header("location: favoritelist.php");
+}
+else if (array_key_exists('goToSQ', $_POST)) {
+	header("location: custom.php");
 }
 
 // Connect Oracle...

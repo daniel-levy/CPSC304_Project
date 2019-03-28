@@ -31,7 +31,7 @@ size="12">
    <p><input type="text" name="email2" size="12"><input type="text" name="flID2" 
 size="12"><input type="text" name="song" size="12">
 <!-- Define two variables to pass values. -->    
-<input type="submit" value="insert" name="insertsubmit"></p>
+<input type="submit" value="Insert" name="insertsubmit"></p>
 </form>
 
 
@@ -60,13 +60,14 @@ size="12"><input type="text" name="song" size="12">
         color: black;
     }
 </style>
-</html>
+</html> 
 
 <form method="POST" action="favoritelist.php">
     <input type="submit" value="Songs" name="goToSong">
 <input type="submit" value="Artists" name="goToArtist">
 <input type="submit" value="Albums" name="goToAlbum">
 <input type="submit" value="Labels" name="goToLabel">
+<input type="submit" value="Special Queries" name="goToSQ">
 </form>
 
 <?php
@@ -284,6 +285,9 @@ else if (array_key_exists('goToAlbum', $_POST)) {
 }
 else if (array_key_exists('goToLabel', $_POST)) {
 	header("location: recordlabel.php");
+}
+else if (array_key_exists('goToSQ', $_POST)) {
+	header("location: custom.php");
 }
 
 

@@ -36,7 +36,7 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: .7em;
         border: 1px solid #DDD;
-        color: black;
+        color: black; 
     }
 </style>
 </html>
@@ -46,11 +46,12 @@
 <input type="submit" value="Albums" name="goToAlbum">
 <input type="submit" value="Labels" name="goToLabel">
 <input type="submit" value="Favorite List" name="goToFL">
+<input type="submit" value="Special Queries" name="goToSQ">
 </form>
 
 <?php
 /* This tells the system that it's no longer just parsing 
-   HTML; it's now parsing PHP. */
+   HTML; it's now parsing PHP. */ 
 // keep track of errors so it redirects the page only if
 // there are no errors
 $success = True;
@@ -158,6 +159,9 @@ else if (array_key_exists('goToLabel', $_POST)) {
 }
 else if (array_key_exists('goToFL', $_POST)) {
 	header("location: favoritelist.php");
+}
+else if (array_key_exists('goToSQ', $_POST)) {
+	header("location: custom.php");
 }
 // Connect Oracle...
 if ($db_conn) {

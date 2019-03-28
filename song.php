@@ -37,7 +37,7 @@
     td {
         font-family: Arial, Helvetica, sans-serif;
         font-size: .7em;
-        border: 1px solid #DDD;
+        border: 1px solid #DDD; 
         color: black;
     }
 </style>
@@ -49,6 +49,7 @@
 <input type="submit" value="Albums" name="goToAlbum">
 <input type="submit" value="Labels" name="goToLabel">
 <input type="submit" value="Favorite List" name="goToFL">
+<input type="submit" value="Special Queries" name="goToSQ">
 </form>
 
 
@@ -162,6 +163,9 @@ else if (array_key_exists('goToLabel', $_POST)) {
 }
 else if (array_key_exists('goToFL', $_POST)) {
 	header("location: favoritelist.php");
+}
+else if (array_key_exists('goToSQ', $_POST)) {
+	header("location: custom.php");
 }
 
 // Connect Oracle...
