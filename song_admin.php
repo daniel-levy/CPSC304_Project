@@ -230,7 +230,7 @@ if ($db_conn) {
 								 "MC ID","Label ID");
 			printTableAll($result, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: song_admin.php");
 		}
 	} 
 	// Insert a new song
@@ -294,7 +294,7 @@ if ($db_conn) {
 			$columnNames = array("Title", "Rating","Primary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: song_admin.php");
 		}
 	} 
 	// Find the songs with similar length to the song entered into the search bar
@@ -312,7 +312,7 @@ if ($db_conn) {
 			$columnNames = array("Title", "Length","Primary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: song_admin.php");
 		}
 	} 
 	// Find the songs with similar release date to the song entered into the search bar
@@ -330,7 +330,7 @@ if ($db_conn) {
 			$columnNames = array("Title", "Length","Primary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: song_admin.php");
 		}
 	}	
 	// Find the songs with similar genre to the song entered into the search bar
@@ -348,7 +348,7 @@ if ($db_conn) {
 			$columnNames = array("Title","Primary Genre","Secondary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: song_admin.php");
 		}
 	} 
 	// Find the songs on the same album as the song entered into the search bar
@@ -366,7 +366,7 @@ if ($db_conn) {
 			$columnNames = array("Title","Primary Genre","Secondary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: song_admin.php");
 		}
 	} 
 	// Find the songs by the same artist as the song entered into the search bar
@@ -384,7 +384,7 @@ if ($db_conn) {
 			$columnNames = array("Title","Primary Genre","Secondary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: song_admin.php");
 		}
 	} 
 	// Find the songs on the same label as the song entered into the search bar
@@ -402,7 +402,7 @@ if ($db_conn) {
 			$columnNames = array("Title","Primary Genre","Secondary Genre");
 			printTableAll($final, $columnNames);
 		} else {
-			header("location: song.php");
+			header("location: song_admin.php");
 		}
 	}
 	//Commit to save changes...
