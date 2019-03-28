@@ -138,7 +138,7 @@ Country
 // keep track of errors so it redirects the page only if
 // there are no errors
 $success = True;
-$db_conn = OCILogon("ora_a5a1b", "a34545153", 
+$db_conn = OCILogon("ora_n7y9a", "a13398145", 
                     "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 function executePlainSQL($cmdstr) { 

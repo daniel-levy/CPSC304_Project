@@ -1,26 +1,4 @@
-<!--Oracle/PHP test file for UBC CPSC 304.
-  Created by Jiemin Zhang, 2011.
-  Modified by Simona Radu, Raghav Thakur, Ed Knorr, and others.
-
-  This file shows the very basics of how to execute PHP commands
-  on Oracle.
-
-  Specifically, it will drop a table, create a table, insert values,
-  update values, and perform select queries.
- 
-  NOTE:  If you have a table called "Music_Creator", it will be destroyed
-         by this sample program.
-
-  The script assumes you already have a server set up.
-  All OCI commands are commands to the Oracle libraries.
-  To get the file to work, you must place it somewhere where your
-  Apache server can run it, and you must rename it to have a ".php"
-  extension.  You must also change the username and password on the 
-  OCILogon below to be your own ORACLE username and password.
-
-  Next, we have some sample HTML code that will appear when you run
-  this script.
- -->
+<!--Page containing database of login.-->
  
 <p><font size="4">Log In</p> 
 <p><font size="2">Username&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -54,17 +32,13 @@
 
 
 <?php
-
-//ini_set('display_errors', 1);
-//error_reporting(E_ALL);
-
 /* This tells the system that it's no longer just parsing 
    HTML; it's now parsing PHP. */
 
 // keep track of errors so it redirects the page only if
 // there are no errors
 $success = True;
-$db_conn = OCILogon("ora_a5a1b", "a34545153", 
+$db_conn = OCILogon("ora_n7y9a", "a13398145", 
                     "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 function executePlainSQL($cmdstr) { 
@@ -205,37 +179,4 @@ if ($db_conn) {
 	$e = OCI_Error(); // For OCILogon errors pass no handle
 	echo htmlentities($e['message']);
 }
-
-/* OCILogon() allows you to log onto the Oracle database
-     The three arguments are the username, password, and database.
-     You will need to replace "username" and "password" for this to
-     to work. 
-     all strings that start with "$" are variables; they are created
-     implicitly by appearing on the left hand side of an assignment 
-     statement */
-/* OCIParse() Prepares Oracle statement for execution
-      The two arguments are the connection and SQL query. */
-/* OCIExecute() executes a previously parsed statement
-      The two arguments are the statement which is a valid OCI
-      statement identifier, and the mode. 
-      default mode is OCI_COMMIT_ON_SUCCESS. Statement is
-      automatically committed after OCIExecute() call when using this
-      mode.
-      Here we use OCI_DEFAULT. Statement is not committed
-      automatically when using this mode. */
-/* OCI_Fetch_Array() Returns the next row from the result data as an  
-     associative or numeric array, or both.
-     The two arguments are a valid OCI statement identifier, and an 
-     optinal second parameter which can be any combination of the 
-     following constants:
-
-     OCI_BOTH - return an array with both associative and numeric 
-     indices (the same as OCI_ASSOC + OCI_NUM). This is the default 
-     behavior.  
-     OCI_ASSOC - return an associative array (as OCI_Fetch_Assoc() 
-     works).  
-     OCI_NUM - return a numeric array, (as OCI_Fetch_Row() works).  
-     OCI_RETURN_NULLS - create empty elements for the NULL fields.  
-     OCI_RETURN_LOBS - return the value of a LOB of the descriptor.  
-     Default mode is OCI_BOTH.  */
 ?>

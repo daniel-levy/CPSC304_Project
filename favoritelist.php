@@ -1,30 +1,4 @@
-<!--Oracle/PHP test file for UBC CPSC 304.
-  Created by Jiemin Zhang, 2011.
-  Modified by Simona Radu, Raghav Thakur, Ed Knorr, and others.
-
-  This file shows the very basics of how to execute PHP commands
-  on Oracle.
-
-  Specifically, it will drop a table, create a table, insert values,
-  update values, and perform select queries.
- 
-  NOTE:  If you have a table called "Music_Creator", it will be destroyed
-         by this sample program.
-
-  The script assumes you already have a server set up.
-  All OCI commands are commands to the Oracle libraries.
-  To get the file to work, you must place it somewhere where your
-  Apache server can run it, and you must rename it to have a ".php"
-  extension.  You must also change the username and password on the 
-  OCILogon below to be your own ORACLE username and password.
-
-  Next, we have some sample HTML code that will appear when you run
-  this script.
- -->
- 
-<!-- Create a form to pass the values.  
-     See below for how to get the values. --> 
-
+<!--Page containing favoritelist.-->
 
 <p><font size="2">Enter your email to get favorite lists:</font></p>      
 <form method="GET" action="favoritelist.php">
@@ -88,14 +62,13 @@ size="12"><input type="text" name="song" size="12">
 </form>
 
 <?php
-
 /* This tells the system that it's no longer just parsing 
    HTML; it's now parsing PHP. */
 
 // keep track of errors so it redirects the page only if
 // there are no errors
 $success = True;
-$db_conn = OCILogon("ora_j6y0b", "a18076159", 
+$db_conn = OCILogon("ora_n7y9a", "a13398145", 
                     "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 function executePlainSQL($cmdstr) { 
