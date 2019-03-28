@@ -194,7 +194,7 @@ if ($db_conn) {
 			$columnNames = array("MusicCreatorID", "Name", "NumberofMembers",
                                 "NumberofReleases", "YearsActive",
                                 "CountryofOrigin", "PrimaryGenre", "SecondaryGenre");
-			printTable($final, $columnNames);
+			printTableAll($final, $columnNames);
 		} else {
 			header("location: musiccreator.php");
 		}

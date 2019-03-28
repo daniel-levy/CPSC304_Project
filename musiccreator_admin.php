@@ -3,13 +3,13 @@
 
 <p>
 <font size="2"> 
-Music Creator ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Number of Members&nbsp;&nbsp;&nbsp;&nbsp;
-Number of Releases&nbsp;&nbsp;&nbsp;
-Years Active&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Country of Origin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Primary Genre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Music Creator ID&nbsp;
+Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+# of Members&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+# of Releases&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Years Active&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Country of Origin&nbsp;
+Primary Genre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Secondary Genre</font></p>
 
 <form method="POST" action="musiccreator_admin.php">
@@ -107,7 +107,7 @@ Country
 // keep track of errors so it redirects the page only if
 // there are no errors
 $success = True;
-$db_conn = OCILogon("ora_a5a1b", "a34545153", 
+$db_conn = OCILogon("ora_n7y9a", "a13398145", 
                     "dbhost.ugrad.cs.ubc.ca:1522/ug");
 function executePlainSQL($cmdstr) { 
      // Take a plain (no bound variables) SQL command and execute it.
@@ -286,11 +286,11 @@ if ($db_conn) {
 			$columnNames = array("MusicCreatorID", "Name", "NumberofMembers",
                                 "NumberofReleases", "YearsActive",
                                 "CountryofOrigin", "PrimaryGenre", "SecondaryGenre");
-			printTable($final, $columnNames);
+			printTableAll($final, $columnNames);
 		} else {
 			header("location: musiccreator_admin.php");
 		}
-	}    
+	}  
 	// Find music creator by number of releases
 	else if (array_key_exists('releaseSearch', $_GET)) {
 		$title = $_GET['title'];
