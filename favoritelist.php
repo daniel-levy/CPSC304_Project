@@ -15,6 +15,14 @@ size="12">
 </p>
 </form>
 
+<p><font size="2">Enter your email and favorite list ID to create a list:</font></p>      
+<form method="GET" action="favoritelist.php">
+<p><input type="text" name="email4" size="12"><input type="text" name="flID4" 
+size="12">
+<input type="submit" value="Make List" name="makeList">
+</p>
+</form>
+
 <p>Select your favorite list ID and insert a song ID into the list:</p>
 
 <p><font size="2"> Email&nbsp;FL_ID&nbsp;Song</font></p>
@@ -54,7 +62,7 @@ size="12"><input type="text" name="song" size="12">
 </style>
 </html>
 
-<form method="POST" action="song.php">
+<form method="POST" action="favoritelist.php">
     <input type="submit" value="Songs" name="goToSong">
 <input type="submit" value="Artists" name="goToArtist">
 <input type="submit" value="Albums" name="goToAlbum">
@@ -241,7 +249,7 @@ function printTable($resultFromSQL, $namesOfColumnsArray)
 
 function printTableAll($resultFromSQL, $namesOfColumnsArray)
 {
-    echo "<br>Here are all the songs you can search with:<br>";
+    // echo "<br>Here are all the songs you can search with:<br>";
     echo "<table>";
     echo "<tr>";
     // iterate through the array and print the string contents
@@ -285,7 +293,7 @@ if ($db_conn) {
 	if (array_key_exists('viewList', $_GET)) {
 	    $email = $_GET['email3'];
 		
-		$result = executePlainSQL("select distinct fl_id from liked_song where email='$email'"); 
+		$result = executePlainSQL("select distinct fl_id from favorite_list where email='$email'"); 
 		
 		if ($_GET && $success) {
 			$columnNames = array("FL_ID");
@@ -293,6 +301,23 @@ if ($db_conn) {
 		} else {
 			header("location: favoritelist.php");
 		}
+	}
+	// Insert values into music creator
+	else if (array_key_exists('makeList', $_GET)) {
+	    // Insert values into table
+	    $email = $_GET['email4'];
+	    $flid = $_GET['flID4'];
+
+        executePlainSQL("insert into favorite_list values ('$email', $flid)");
+        OCICommit($db_conn);
+		$result = executePlainSQL("select fl_id from favorite_list where email='$email'");
+		if ($_GET && $success) {
+			$columnNames = array("FL_ID");
+			printTableAll($result, $columnNames);
+		} else {
+			header("location: favoritelist.php");
+		}		
+		
 	}
 	// Insert values into music creator
 	else if (array_key_exists('viewSong', $_GET)) {
