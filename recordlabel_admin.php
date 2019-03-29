@@ -96,6 +96,7 @@ Founder's Name
 <input type="submit" value="Songs" name="goToSong">    
 <input type="submit" value="Artists" name="goToArtist">
 <input type="submit" value="Albums" name="goToAlbum">
+<input type="submit" value="Users" name="goToUsers">
 </form>
 
 <?php
@@ -205,6 +206,9 @@ else if (array_key_exists('goToAlbum', $_POST)) {
 }
 else if (array_key_exists('goToSong', $_POST)) {
 	header("location: song_admin.php");
+}
+else if (array_key_exists('goToUsers', $_POST)) {
+	header("location: edit_user.php");
 }
 
 // Connect Oracle...

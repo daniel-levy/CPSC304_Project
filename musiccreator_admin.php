@@ -99,6 +99,7 @@ Country
 <input type="submit" value="Songs" name="goToSong">
 <input type="submit" value="Albums" name="goToAlbum">
 <input type="submit" value="Labels" name="goToLabel">
+<input type="submit" value="Users" name="goToUsers">
 </form>
 
 <?php
@@ -209,6 +210,10 @@ else if (array_key_exists('goToAlbum', $_POST)) {
 else if (array_key_exists('goToLabel', $_POST)) {
 	header("location: recordlabel_admin.php");
 }
+else if (array_key_exists('goToUsers', $_POST)) {
+	header("location: edit_user.php");
+}
+
 
 // Connect Oracle...
 if ($db_conn) {
