@@ -99,6 +99,10 @@ Founder's Name
 <input type="submit" value="Users" name="goToUsers">
 </form>
 
+<form method="POST" action="recordlabel_admin.php">
+<input type="submit" value="Logout" name="logout">
+</form>
+
 <?php
 /* This tells the system that it's no longer just parsing 
    HTML; it's now parsing PHP. */
@@ -209,6 +213,9 @@ else if (array_key_exists('goToSong', $_POST)) {
 }
 else if (array_key_exists('goToUsers', $_POST)) {
 	header("location: edit_user.php");
+}
+else if (array_key_exists('logout', $_POST)) {
+	header("location: login.php");
 }
 
 // Connect Oracle...

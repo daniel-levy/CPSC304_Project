@@ -31,6 +31,10 @@
 <input type="submit" value="See Database" name="queryAll">
 </form>
 
+<form method="POST" action="custom.php">
+<input type="submit" value="Logout" name="logout">
+</form>
+
 <html>
 <style>
     table {
@@ -141,100 +145,6 @@ function executeBoundSQL($cmdstr, $list) {
 
 }
 
-function printResult($result) { //prints results from a select statement
-	echo "<br>Got data from table Record_Label1:<br>";
-	echo "<table>";
-	echo "<tr><th>ID</th><th>Name</th></tr>";
-
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row["mc_id"] . "</td><td>" .$row["name"] . "</td><td>" .
-		$row["number_of_members"] . "</td><td>" .
-		$row["number_of_releases"] ."</td><td>" .
-		$row["years_active"] . "</td><td>" .
-		$row["country_of_origin"] . "</td><td>" .
-		$row["primary"] . "</td><td>" .$row["secondary"] . "</td></tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-}
-
-
-/*
-Function printTable created by Raghav Thakur on 2018-11-15.
-
-Input:  takes in a result returned from your SQL query and an array of
-        strings of the column names
-Output: prints an HTML table of the results returned from your SQL query.
-
-printTable is an easy way to iteratively print the columns of a table, 
-instead of having to manually print out each column which can be
-cumbersome and lead to duplicate code all over the place.
-
-If you will be making calls to printTable multiple times and intend to
-use it for multiple php files, please do the following:
-
-Step 1) Create a new php file and copy the printTable function and the
-        associated HTML styling code into the file you created, give
-        this file a meaningful name such as 'print-table.php'.
-        (Search for "style" above.)
-
-Step 2) In whichever file you want to use the printTable function,
-        assuming this file also contains the server code to communicate
-        with the database:  Type in "include 'print-table.php'" without
-        double quotes.  If the file in which you want to use printTable
-        is not in the root directory, you'll need to specify the path of 
-        root directory where 'print-table.php' is.  As an example:
-        "include '../print-table.php'" without double quotes.
-
-Step 3) You can now make calls to the printTable function without 
-        needing to redeclare it in your current file.
-
-Note:  You can move all the server code into a separate file called 
-       'server.php' in a similar way, except whichever file needs to
-       use the server code needs to have "require 'server.php'" without
-       double quotes.  So, you might have something like what's shown
-       below in each file:
-
-require 'server.php';
-require 'print-table.php'
-
-Using printTable as an example:
-
-Note: PHP uses '$' to declare variables
-
-$result = executePlainSQL("SELECT CUST_ID, NAME, PHONE_NUM FROM CUSTOMERS");
-
-$columnNames = array("Customer ID", "Name", "Phone Number");
-printTable($result, $columnNames); // this will print the table
-                                   // in the current webpage
-
-*/
-
-function printTable($resultFromSQL, $namesOfColumnsArray)
-{
-    echo "<br>Here are some labels you should check out:<br>";
-    echo "<table>";
-    echo "<tr>";
-    // iterate through the array and print the string contents
-    foreach ($namesOfColumnsArray as $name) {
-        echo "<th>$name</th>";
-    }
-    echo "</tr>";
-
-    while ($row = OCI_Fetch_Array($resultFromSQL, OCI_BOTH)) {
-        echo "<tr>";
-        $string = "";
-
-        // iterates through the results returned from SQL query and
-        // creates the contents of the table
-        for ($i = 0; $i < sizeof($namesOfColumnsArray); $i++) {
-            $string .= "<td>" . $row["$i"] . "</td>";
-        }
-        echo $string;
-        echo "</tr>";
-    }
-    echo "</table>";
-}
-
 function printTableAll($resultFromSQL, $namesOfColumnsArray)
 {
     echo "<br>Here are all the labels you can search with:<br>";
@@ -259,6 +169,10 @@ function printTableAll($resultFromSQL, $namesOfColumnsArray)
         echo "</tr>";
     }
     echo "</table>";
+}
+
+if (array_key_exists('logout', $_POST)) {
+	header("location: login.php");
 }
 
 // Connect Oracle...
@@ -325,38 +239,5 @@ if ($db_conn) {
 	$e = OCI_Error(); // For OCILogon errors pass no handle
 	echo htmlentities($e['message']);
 }
-
-/* OCILogon() allows you to log onto the Oracle database
-     The three arguments are the username, password, and database.
-     You will need to replace "username" and "password" for this to
-     to work. 
-     all strings that start with "$" are variables; they are created
-     implicitly by appearing on the left hand side of an assignment 
-     statement */
-/* OCIParse() Prepares Oracle statement for execution
-      The two arguments are the connection and SQL query. */
-/* OCIExecute() executes a previously parsed statement
-      The two arguments are the statement which is a valid OCI
-      statement identifier, and the mode. 
-      default mode is OCI_COMMIT_ON_SUCCESS. Statement is
-      automatically committed after OCIExecute() call when using this
-      mode.
-      Here we use OCI_DEFAULT. Statement is not committed
-      automatically when using this mode. */
-/* OCI_Fetch_Array() Returns the next row from the result data as an  
-     associative or numeric array, or both.
-     The two arguments are a valid OCI statement identifier, and an 
-     optinal second parameter which can be any combination of the 
-     following constants:
-
-     OCI_BOTH - return an array with both associative and numeric 
-     indices (the same as OCI_ASSOC + OCI_NUM). This is the default 
-     behavior.  
-     OCI_ASSOC - return an associative array (as OCI_Fetch_Assoc() 
-     works).  
-     OCI_NUM - return a numeric array, (as OCI_Fetch_Row() works).  
-     OCI_RETURN_NULLS - create empty elements for the NULL fields.  
-     OCI_RETURN_LOBS - return the value of a LOB of the descriptor.  
-     Default mode is OCI_BOTH.  */
 ?>
 

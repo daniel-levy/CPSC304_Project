@@ -52,6 +52,10 @@
 <input type="submit" value="Special Queries" name="goToSQ">
 </form>
 
+<form method="POST" action="song.php">
+<input type="submit" value="Logout" name="logout">
+</form>
+
 
 <?php
 /* This tells the system that it's no longer just parsing 
@@ -166,6 +170,9 @@ else if (array_key_exists('goToFL', $_POST)) {
 }
 else if (array_key_exists('goToSQ', $_POST)) {
 	header("location: custom.php");
+}
+else if (array_key_exists('logout', $_POST)) {
+	header("location: login.php");
 }
 
 // Connect Oracle...

@@ -102,6 +102,10 @@ Country
 <input type="submit" value="Users" name="goToUsers">
 </form>
 
+<form method="POST" action="musiccreator_admin.php">
+<input type="submit" value="Logout" name="logout">
+</form>
+
 <?php
 /* This tells the system that it's no longer just parsing 
    HTML; it's now parsing PHP. */
@@ -212,6 +216,9 @@ else if (array_key_exists('goToLabel', $_POST)) {
 }
 else if (array_key_exists('goToUsers', $_POST)) {
 	header("location: edit_user.php");
+}
+else if (array_key_exists('logout', $_POST)) {
+	header("location: login.php");
 }
 
 

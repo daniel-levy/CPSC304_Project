@@ -1,4 +1,5 @@
-<!--Page containing database of songs with admin functionality.-->
+<!--Page to edit users (admin privilege).-->
+
 <p>User Interface For administrator</p>
 <p>*search user and show username/email/favoritelist by username:</p>
 <p><font size="2"> 
@@ -73,6 +74,10 @@ Username
 <input type="submit" value="Artists" name="goToArtist">
 <input type="submit" value="Albums" name="goToAlbum">
 <input type="submit" value="Labels" name="goToLabel">
+</form>
+
+<form method="POST" action="edit_user.php">
+<input type="submit" value="Logout" name="logout">
 </form>
 
 
@@ -188,6 +193,9 @@ else if (array_key_exists('goToLabel', $_POST)) {
 }
 else if (array_key_exists('goToSong', $_POST)) {
 	header("location: song_admin.php");
+}
+else if (array_key_exists('logout', $_POST)) {
+	header("location: login.php");
 }
 //!!!!!
 // Connect Oracle...
