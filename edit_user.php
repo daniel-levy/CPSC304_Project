@@ -1,5 +1,4 @@
-<!--Page to edit users (admin privilege).-->
-
+<!--Page containing database of songs with admin functionality.-->
 <p>User Interface For administrator</p>
 <p>*search user and show username/email/favoritelist by username:</p>
 <p><font size="2"> 
@@ -74,6 +73,7 @@ Username
 <input type="submit" value="Artists" name="goToArtist">
 <input type="submit" value="Albums" name="goToAlbum">
 <input type="submit" value="Labels" name="goToLabel">
+<input type="submit" value="Logout" name="logout">
 </form>
 
 <form method="POST" action="edit_user.php">
@@ -155,7 +155,6 @@ function executeBoundSQL($cmdstr, $list) {
 		}
 	}
 }
-
 // prints table of results
 function printTableAll($resultFromSQL, $namesOfColumnsArray)
 {
@@ -180,7 +179,6 @@ function printTableAll($resultFromSQL, $namesOfColumnsArray)
     }
     echo "</table>";
 }
-
 // go to designated pages
 if (array_key_exists('goToArtist', $_POST)) {
 	header("location: musiccreator_admin.php");
@@ -252,9 +250,7 @@ if ($db_conn) {
 	else if (array_key_exists('changesubmit', $_POST)) {
 		$old = $_POST['old'];
 		$new = $_POST['new'];
-
 		executePlainSQL('update users set username='.$new.'where username=\''.$old.'\''); 
-
 		OCICommit($db_conn);
 		if ($_POST && $success) {
 			echo"<br>Successfully change username</br>";
@@ -267,7 +263,6 @@ if ($db_conn) {
 		$title = $_POST['title'];
 		
 		executePlainSQL('delete from favorite_list where email=(select email from users where username = \''.$title.'\')');
-
 		executePlainSQL('delete from users where username=\''.$title.'\'');
 		OCICommit($db_conn);
 		if ($_POST && $success) {
