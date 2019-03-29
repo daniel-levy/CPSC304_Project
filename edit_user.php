@@ -250,7 +250,7 @@ if ($db_conn) {
 	else if (array_key_exists('changesubmit', $_POST)) {
 		$old = $_POST['old'];
 		$new = $_POST['new'];
-		executePlainSQL('update users set username='.$new.'where username=\''.$old.'\''); 
+		executePlainSQL("update users set username='$new' where username='$old'"); 
 		OCICommit($db_conn);
 		if ($_POST && $success) {
 			echo"<br>Successfully change username</br>";
